@@ -16,16 +16,16 @@
     <ul class="todos">
       <span class="todos-title">Todos</span>
       <li
-        :class="['todo', { done: todo.done }]"
         v-for="todo in todos"
         :key="todo.id"
+        :class="['todo', { done: todo.done }]"
       >
         <label class="checkbox-input" @click="toogleTodoStatus(todo)">
           <input type="checkbox" :checked="todo.done" />
           <span class="checkmark"></span>
         </label>
         <span class="todo-text">{{ todo.text }}</span>
-        <a class="todo-delete"></a>
+        <a class="todo-delete" @click="destroy(todo)"></a>
       </li>
     </ul>
   </div>
@@ -44,7 +44,6 @@ export default {
       }
     }
   },
-
   methods: {
     createTodo() {
       const data = {
@@ -52,7 +51,6 @@ export default {
         text: this.form.text,
         done: this.form.done
       }
-      console.log(data)
       this.todos.push(data)
 
       this.form = {
@@ -62,10 +60,19 @@ export default {
       }
     },
     toogleTodoStatus(todo) {
-      const data = !todo.done
+      const data = {
+        ...todo,
+        done: todo.done === true ? false : true
+      }
 
-      const index = this.todos.findIndex((todo) => todo.id === data.id)
+      const index = this.todos.findIndex(({ id }) => id === data.id)
       this.todos[index] = data
+    },
+    destroy(todo) {
+      const data = {...todo}
+
+      const index = this.todos.findIndex(({ id }) => id === data.id)
+      this.todos.splice(index, 1)
     }
   }
 }
