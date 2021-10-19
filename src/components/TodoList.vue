@@ -69,7 +69,7 @@ export default {
       this.todos[index] = data
     },
     destroy(todo) {
-      const data = {...todo}
+      const data = { ...todo }
 
       const index = this.todos.findIndex(({ id }) => id === data.id)
       this.todos.splice(index, 1)
